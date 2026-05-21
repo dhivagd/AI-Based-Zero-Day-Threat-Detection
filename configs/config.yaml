@@ -1,0 +1,51 @@
+detection:
+  sensitivity: medium          # low/medium/high
+  baseline_hours: 168          # 7 days
+  alert_threshold: 0.85        # ensemble score threshold
+
+models:
+  isolation_forest:
+    contamination: 0.01
+    n_estimators: 200
+  autoencoder:
+    threshold_percentile: 95
+    epochs: 50
+
+response:
+  auto_block: false            # require human approval
+  quarantine_path: /quarantine
+
+threat_intel:
+  virus_total_api_key: ""      # set via environment variable
+  mitre_attack_url: "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"
+  nvd_api_key: ""              # set via environment variable
+
+storage:
+  timescaledb:
+    host: localhost
+    port: 5432
+    database: zeroday
+    user: postgres
+    password: ""
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+  elasticsearch:
+    hosts: ["http://localhost:9200"]
+  sqlite:
+    path: ./data/models.db
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+
+dashboard:
+  host: 0.0.0.0
+  port: 3000
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: ./logs/zeroday.log
